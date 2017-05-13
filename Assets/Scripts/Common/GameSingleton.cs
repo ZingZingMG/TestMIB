@@ -24,22 +24,22 @@ public class GameSingleton : MonoBehaviour
 
     private void Init()
     {
-        string FindGameKind = GetArg("gamekind");
-        if (FindGameKind != null)
-        {
-            try
-            {
-                GameKind = (GlobalTypes.GameKind)System.Enum.Parse(typeof(GlobalTypes.GameKind), FindGameKind, true);
-            }
-            catch (System.Exception e)
-            {
-                // TODO: Assert 작업 해야함.
-            }
-        }
-        else
-        {
-            // TODO: Assert 작업 해야함.
-        }
+        //string FindGameKind = GetArg("gamekind");
+        //if (FindGameKind != null)
+        //{
+        //    try
+        //    {
+        //        GameKind = (GlobalTypes.GameKind)System.Enum.Parse(typeof(GlobalTypes.GameKind), FindGameKind, true);
+        //    }
+        //    catch (System.Exception e)
+        //    {
+        //        // TODO: Assert 작업 해야함.
+        //    }
+        //}
+        //else
+        //{
+        //    // TODO: Assert 작업 해야함.
+        //}
     }
 
     void Awake()

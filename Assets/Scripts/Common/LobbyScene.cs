@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 
-public class BaseLobby
+public class LobbyScene : MonoBehaviour
 {
 
     public void Init()
@@ -11,16 +12,6 @@ public class BaseLobby
     }
 
     public void MakeRoom()
-    {
-
-    }
-
-    public void DirectlyJoin()
-    {
-
-    }
-
-    public void SelectJoin()
     {
 
     }

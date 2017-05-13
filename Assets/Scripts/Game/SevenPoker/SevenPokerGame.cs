@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SevenPokerGame : BaseGame
+public class SevenPokerGame : PlayScene
 {
+    public string CardPackPath;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    [System.NonSerialized]
+    protected Sprite[] CardSpriteArray;
 
-    // Update is called once per frame
-    override protected void Update ()
+    void Awake()
     {
-        base.Update();
+        CardSpriteArray = Resources.LoadAll<Sprite>(CardPackPath);
+        assert.set(CardSpriteArray.Length > 0);
+    }
+
+    // Use this for initialization
+    void Start () {
+		
 	}
 }
