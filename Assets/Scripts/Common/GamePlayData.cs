@@ -4,11 +4,11 @@ using UnityEditor;
 
 public partial class GamePlayData
 {
-    public class SevenPorker
+    public class SevenPoker
     {
         public SevenPokerUserInfo[] UserInfos = new SevenPokerUserInfo[10];
-        public SevenPorkerChannel Channel = new SevenPorkerChannel();
-        public SevenPorkerChannelRoomInfo[] RoomInfos = new SevenPorkerChannelRoomInfo[100];
+        public SevenPokerChannel Channel = new SevenPokerChannel();
+        public SevenPokerChannelRoomInfo[] RoomInfos = new SevenPokerChannelRoomInfo[100];
 
         public void Init()
         {
@@ -64,7 +64,7 @@ public partial class GamePlayData
         }
     }
 
-    public SevenPorker SevenPorkerData = null;
+    public SevenPoker SevenPokerData = null;
     public Hoola HoolaData = null;
     public Baduki BadukiData = null;
     public Gostop GostopData = null;
@@ -72,7 +72,7 @@ public partial class GamePlayData
         
     public void Init( GlobalTypes.GameKind Kind )
     {
-        SevenPorkerData = null;
+        SevenPokerData = null;
         HoolaData = null;
         BadukiData = null;
         GostopData = null;
@@ -81,7 +81,7 @@ public partial class GamePlayData
         switch (Kind)
         {
             case GlobalTypes.GameKind.SevenPoker:
-                SevenPorkerData = new SevenPorker();
+                SevenPokerData = new SevenPoker();
                 break;
             case GlobalTypes.GameKind.Hoola:
                 HoolaData = new Hoola();

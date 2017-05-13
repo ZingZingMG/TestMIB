@@ -42,20 +42,20 @@ public partial class GamePlayData
         public byte PlayGrade;
     }
 
-    public class PorkerChannelInfo : ChannelInfo
+    public class PokerChannelInfo : ChannelInfo
     {
         public string Name = "Test";
         public int RoomCnt = 1;
         public int UserCnt = 1;
     }
 
-    public class PorkerChannel : Channel
+    public class PokerChannel : Channel
     {
         public byte Type;
         public byte Grade;
     }
 
-    public class PorkerChannelRoomInfo : ChannelRoomInfo
+    public class PokerChannelRoomInfo : ChannelRoomInfo
     {
         public byte Grade;
         public string RoomName = "테스트 방";
@@ -69,17 +69,17 @@ public partial class GamePlayData
 
     }
 
-    public class SevenPorkerChannelInfo : PorkerChannelInfo
+    public class SevenPokerChannelInfo : PokerChannelInfo
     {
 
     }
 
-    public class SevenPorkerChannel : PorkerChannel
+    public class SevenPokerChannel : PokerChannel
     {
-        public SevenPorkerChannelInfo[] ChanelInfos = new SevenPorkerChannelInfo[15];
+        public SevenPokerChannelInfo[] ChanelInfos = new SevenPokerChannelInfo[15];
     }
 
-    public class SevenPorkerChannelRoomInfo : PorkerChannelRoomInfo
+    public class SevenPokerChannelRoomInfo : PokerChannelRoomInfo
     {
         public int BBingValue;
         public byte RuleType;
@@ -91,17 +91,17 @@ public partial class GamePlayData
 
     }
 
-    public class HoolaChannelInfo : PorkerChannelInfo
+    public class HoolaChannelInfo : PokerChannelInfo
     {
 
     }
 
-    public class HoolaChannel : PorkerChannel
+    public class HoolaChannel : PokerChannel
     {
         public HoolaChannelInfo[] ChanelInfos = new HoolaChannelInfo[15];
     }
 
-    public class HoolaChannelRoomInfo : PorkerChannelRoomInfo
+    public class HoolaChannelRoomInfo : PokerChannelRoomInfo
     {
         public byte CalculateType;
         public byte GameMoneyRuleType;
@@ -117,17 +117,17 @@ public partial class GamePlayData
 
     }
 
-    public class BadukiChannelInfo : PorkerChannelInfo
+    public class BadukiChannelInfo : PokerChannelInfo
     {
 
     }
 
-    public class BadukiChannel : PorkerChannel
+    public class BadukiChannel : PokerChannel
     {
         public BadukiChannelInfo[] ChanelInfos = new BadukiChannelInfo[15];
     }
 
-    public class BadukiChannelRoomInfo : PorkerChannelRoomInfo
+    public class BadukiChannelRoomInfo : PokerChannelRoomInfo
     {
         public int BBingValue;
     }
