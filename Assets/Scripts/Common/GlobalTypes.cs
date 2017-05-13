@@ -5,11 +5,11 @@ namespace GlobalTypes
 {
     public enum GameKind
     {
-        Sudda,
-        Matgo,
         SevenPoker,
         Hoola,
         Baduki,
+        Gostop,
+        Sudda,
     }
 }
 
