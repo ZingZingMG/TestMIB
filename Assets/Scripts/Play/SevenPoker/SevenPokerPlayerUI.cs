@@ -4,30 +4,30 @@ using UnityEngine;
 
 public class SevenPokerPlayerUI : PlayerUIBase
 {
-	// Use this for initialization
-	void Start ()
+    public void SetMode_StartUI()
     {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
+        CardSet.spacing = GameSingleton.GetPlay().GetBoard().ToSevenPoker().CardSpacing_Choice;
+    }
 
     public void SetMode_ChoiceUI()
     {
-        CardSet.spacing = GameSingleton.GetBasePlayScene().GetSevenPokerBoard().CardSpacing_Choice;
+        if( GetPlayer().ToSevenPoker().IsMyPlayer() == true )
+        {
+            gameObject.SetActive(false);
+        }        
     }
 
     public void SetMode_PlayUI()
     {
-        CardSet.spacing = GameSingleton.GetBasePlayScene().GetSevenPokerBoard().CardSpacing_Play;
+        if (GetPlayer().ToSevenPoker().IsMyPlayer() == true)
+        {
+            gameObject.SetActive(true);
+        }
+        CardSet.spacing = GameSingleton.GetPlay().GetBoard().ToSevenPoker().CardSpacing_Play;
     }
 
     public void SetMode_DieUI()
     {
-        CardSet.spacing = GameSingleton.GetBasePlayScene().GetSevenPokerBoard().CardSpacing_Die;
+        CardSet.spacing = GameSingleton.GetPlay().GetBoard().ToSevenPoker().CardSpacing_Die;
     }
 }

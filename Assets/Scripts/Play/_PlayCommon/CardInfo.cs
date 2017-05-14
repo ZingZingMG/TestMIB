@@ -7,10 +7,10 @@ public class CardInfoBase
     public bool FrontView = true;
     public int Number = 1;
 
-    virtual public void Clone(CardInfoBase info)
+    virtual public void Clone(CardInfoBase src)
     {
-        FrontView = info.FrontView;
-        Number = info.Number;
+        FrontView = src.FrontView;
+        Number = src.Number;
     }       
 }
 
@@ -18,12 +18,12 @@ public class CardInfo_Trump : CardInfoBase
 {
     public PlayTypes.TrumpMark Mark;
 
-    override public void Clone(CardInfoBase info)
+    override public void Clone(CardInfoBase src)
     {
-        base.Clone(info);
+        base.Clone(src);
 
-        assert.set(info is CardInfo_Trump);
-        CardInfo_Trump TrumpInfo = info as CardInfo_Trump;
+        assert.set(src is CardInfo_Trump);
+        CardInfo_Trump TrumpInfo = src as CardInfo_Trump;
         Mark = TrumpInfo.Mark;
     }
 
@@ -32,12 +32,12 @@ public class CardInfo_Trump : CardInfoBase
 
 public class CardInfo_Gostop : CardInfoBase
 {
-    override public void Clone(CardInfoBase info)
+    override public void Clone(CardInfoBase src)
     {
-        base.Clone(info);
+        base.Clone(src);
 
-        assert.set(info is CardInfo_Gostop);
-        CardInfo_Gostop GostopInfo = info as CardInfo_Gostop;
+        assert.set(src is CardInfo_Gostop);
+        CardInfo_Gostop GostopInfo = src as CardInfo_Gostop;
     }    
 }
 

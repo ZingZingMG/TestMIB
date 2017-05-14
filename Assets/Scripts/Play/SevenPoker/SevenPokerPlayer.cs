@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class SevenPokerPlayer : PlayerBase
 {
-    
+    public bool IsMyPlayer()
+    {
+        return (GameSingleton.GetPlay().ToSevenPoker().GetMyPlayer() == this);
+    }
 
-    
 
     override public void JoinPlayer()
     {
@@ -22,6 +24,11 @@ public class SevenPokerPlayer : PlayerBase
     override public void ResetPlay()
     {
         base.ResetPlay();
+    }
+
+    public void SetMode_Start()
+    {
+        GetSevenPokerPlayerUI().SetMode_StartUI();
     }
 
     public void SetMode_Choice()

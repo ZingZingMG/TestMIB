@@ -5,19 +5,29 @@ using UnityEngine.UI;
 
 public class PlayerBase
 {
+    public SevenPokerPlayer ToSevenPoker()
+    {
+        assert.set(this is SevenPokerPlayer);
+        return this as SevenPokerPlayer;
+    }
+
+
+
+
     // ===========================================================================
     //
     //  카드
     //
     // ===========================================================================
-    List<CardInfoBase> CardList = new List<CardInfoBase>();
+    [System.NonSerialized]
+    public List<CardInfoBase> CardList = new List<CardInfoBase>();
 
     public void AddCard_ByInfo(CardInfoBase cardInfo)
     {
         CardList.Add(cardInfo);
 
         // 카드 오브젝트 생성        
-        GameObject cardObject = GameSingleton.GetBasePlayScene().CreateCard(GetPlayerUI().GetCardSet(), cardInfo);
+        GameObject cardObject = GameSingleton.GetPlay().CreateCard(GetPlayerUI().GetCardSet(), cardInfo);
         assert.set(cardObject);
 
         GetPlayerUI().AddCardObject(cardObject);
@@ -57,7 +67,7 @@ public class PlayerBase
     // 수동 연결 해줘야함
     protected PlayerUIBase UI = null;
     
-    public void SetPlayerUI( PlayerUIBase ui) { UI = ui; }
+    public void SetPlayerUI( PlayerUIBase ui) { UI = ui; UI.SetPlayer(this); }
     public PlayerUIBase GetPlayerUI() { assert.set(UI); return UI; }
     public SevenPokerPlayerUI GetSevenPokerPlayerUI() { assert.set(UI); assert.set(UI is SevenPokerPlayerUI); return UI as SevenPokerPlayerUI; }
 
@@ -113,6 +123,7 @@ public class PlayerBase
     {
         PlayPosType = PlayTypes.PlayPositionType.None;
         GetPlayerUI().gameObject.SetActive(false);
+        GetPlayerUI().SetPlayer(null);
         UI = null;
     }
 

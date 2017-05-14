@@ -18,29 +18,23 @@ public class SevenPokerChoiceCard : MonoBehaviour
         CardSetTr = transform.Find("CardSet");
     }
 
-	// Use this for initialization
-	void Start ()
-    {
-        		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-
-    public void SetMode_Choice()
+    public void EnableChoice()
     {
         gameObject.SetActive(true);
         ThrowText.SetActive(true);
         OpenText.SetActive(false);
 
-        //SevenPokerUser user = GameSingleton.GetSevenPokerPlayScene().MainCavasClass.GetUser(0);
-        //assert.set(user.IsMyUser());        
+        var list = GameSingleton.GetPlay().ToSevenPoker().GetMyPlayer().CardList;
+        assert.set(list.Count == 4);
+        for( int i=0; i<list.Count; ++i )
+        {
+            string cardpath = string.Format("Card{0:00}/Front/TrumpCard", i+1);
+            Card_Trump card = CardSetTr.Find(cardpath).GetComponent<Card_Trump>();
+            card.SetInfo(list[i]);
+        }
     }
 
-    public void SetMode_Play()
+    public void DisableChoice()
     {
         gameObject.SetActive(false);
     }

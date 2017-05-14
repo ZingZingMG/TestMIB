@@ -53,14 +53,14 @@ public partial class SevenPokerScene : PlayScene
         // 입장 후 내 Player 셋팅
         if (IsObserverMode() == false)
         {
-            GetSevenPokerBoard().LinkPlayerUI(MyInfo.PositionIndex);
+            GetBoard().ToSevenPoker().LinkPlayerUI(MyInfo.PositionIndex);
 
-            MyPlayer = GetSevenPokerPlayer(MyInfo.PositionIndex);
+            MyPlayer = GetPlayer(MyInfo.PositionIndex).ToSevenPoker();
             MyPlayer.JoinPlayer();
         }
         else
         {
-            GetSevenPokerBoard().LinkPlayerUI(0);
+            GetBoard().ToSevenPoker().LinkPlayerUI(0);
             assert.set(MyPlayer == null);
         }
 

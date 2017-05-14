@@ -8,7 +8,7 @@ public class PlayerUIBase : MonoBehaviour
     void Awake()
     {
         assert.set(CardSet);
-        CardSet.cellSize = GameSingleton.GetBasePlayScene().CardSize;
+        CardSet.cellSize = GameSingleton.GetPlay().CardSize;
     }    
 
     virtual public void ResetPlayUI()
@@ -29,7 +29,14 @@ public class PlayerUIBase : MonoBehaviour
         return res;
     }
 
-
+    // ===========================================================================
+    //
+    //  Player
+    //
+    // ===========================================================================
+    protected PlayerBase Player = null;
+    public void SetPlayer(PlayerBase player) { Player = player; }
+    public PlayerBase GetPlayer() { assert.set(Player); return Player; }    
 
     // ===========================================================================
     //

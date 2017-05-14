@@ -46,6 +46,6 @@ public partial class SevenPokerScene : PlayScene
 
     public void OnCompleteChoiceCardShare()
     {
-        int d = 0;
+        GetBoard().ToSevenPoker().SetMode_Choice();
     }
 }

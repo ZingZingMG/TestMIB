@@ -9,10 +9,18 @@ abstract public class Card_Base : MonoBehaviour
     virtual protected void Start()
     {
         RectTransform rt = GetComponent<RectTransform>();
-        rt.sizeDelta = GameSingleton.GetBasePlayScene().CardSize;
+        rt.sizeDelta = GameSingleton.GetPlay().CardSize;
         
         Image img = GetComponent<Image>();
-        img.sprite = GameSingleton.GetBasePlayScene().GetCardSprite(GetCardInfo());
+        img.sprite = GameSingleton.GetPlay().GetCardSprite(GetCardInfo());
+    }
+
+    public void SetInfo( CardInfoBase info )
+    {
+        GetCardInfo().Clone(info);
+
+        Image img = GetComponent<Image>();
+        img.sprite = GameSingleton.GetPlay().GetCardSprite(GetCardInfo());
     }
 
     abstract public CardInfoBase GetCardInfo();

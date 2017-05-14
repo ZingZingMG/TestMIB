@@ -15,7 +15,7 @@ public partial class SevenPokerScene : PlayScene
         {
             CardInfo_Trump info = RecvCardShareQueue.Dequeue();
 
-            _CardShareToPlayer(info, CurPlayer, GetSevenPokerBoard().GetDealerPosition(), 0.3f);
+            _CardShareToPlayer(info, CurPlayer, GetBoard().ToSevenPoker().GetDealerPosition(), 0.3f);
 
             yield return new WaitForSeconds(0.2f);
             CurPlayer = CurPlayer.GetNextPlayPlayer();
@@ -39,9 +39,8 @@ public partial class SevenPokerScene : PlayScene
     {
         // ===========================================================================
         // 게임 준비
-        // ===========================================================================        
-        // 카드 선택화면 비활성화
-        //ChoiceCard.gameObject.SetActive(false);
+        // ===========================================================================
+        GetBoard().ToSevenPoker().SetMode_Start();
         foreach (PlayerBase player in PlayerList)
         {
             assert.set(player is SevenPokerPlayer);
@@ -50,7 +49,7 @@ public partial class SevenPokerScene : PlayScene
             if( player.IsPlay() )
             {                
                 SevenPokerPlayer spPlayer = player as SevenPokerPlayer;
-                spPlayer.SetMode_Choice();
+                spPlayer.SetMode_Start();
             }            
         }
 

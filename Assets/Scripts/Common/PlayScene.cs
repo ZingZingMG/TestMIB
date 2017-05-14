@@ -5,7 +5,14 @@ using UnityEngine.UI;
 
 
 public abstract class PlayScene : MonoBehaviour
-{    
+{
+    public SevenPokerScene ToSevenPoker()
+    {
+        assert.set(this is SevenPokerScene);
+        return this as SevenPokerScene;
+    }
+
+
     public void Init()
     {
 
@@ -13,7 +20,7 @@ public abstract class PlayScene : MonoBehaviour
 
     virtual protected void Awake()
     {
-        GameSingleton.SetPlayScene(this);
+        GameSingleton.SetPlay(this);
 
         // 보드 존재 하는지 체크
         assert.set(Board);
@@ -54,7 +61,7 @@ public abstract class PlayScene : MonoBehaviour
 
     void OnDestroy()
     {
-        GameSingleton.SetPlayScene(null);
+        GameSingleton.SetPlay(null);
     }
 
     // ===========================================================================
@@ -72,9 +79,7 @@ public abstract class PlayScene : MonoBehaviour
     // ===========================================================================
     // MainCanvas 에 붙여서 해당 보드를 관리 - Editor에서 연결
     public BoardBase Board;
-
-    public BoardBase GetBoardBase() { assert.set(Board); return Board; }
-    public SevenPokerBoard GetSevenPokerBoard() { assert.set(Board); assert.set(Board is SevenPokerBoard); return Board as SevenPokerBoard; }
+    public BoardBase GetBoard() { assert.set(Board); return Board; }    
 
     // ===========================================================================
     //
@@ -91,8 +96,6 @@ public abstract class PlayScene : MonoBehaviour
     // 내가 플레이 중이라면
     public bool IsObserverMode() { return ObserverMode; }
     public PlayerBase GetPlayer(int PlayerIndex) { return PlayerList[PlayerIndex]; }
-    public SevenPokerPlayer GetSevenPokerPlayer(int PlayerIndex) { assert.set(PlayerList[PlayerIndex] is SevenPokerPlayer); return PlayerList[PlayerIndex] as SevenPokerPlayer; }
-
 
     // ===========================================================================
     //
@@ -139,7 +142,7 @@ public abstract class PlayScene : MonoBehaviour
 
     public GameObject CreateBoardCard(CardInfoBase cardInfo, Vector3 Position, float Alpha = 1.0f)
     {        
-        GameObject CardObject = CreateCard(GetBoardBase().transform, cardInfo);
+        GameObject CardObject = CreateCard(GetBoard().transform, cardInfo);
         assert.set(CardObject);
         CardObject.transform.position = Position;
         if(Alpha < 1.0f )
@@ -184,7 +187,7 @@ public abstract class PlayScene : MonoBehaviour
     
     protected void _CardShareToPlayer( CardInfoBase info, PlayerBase player, Vector3 Start, float time, iTween.EaseType easeType = iTween.EaseType.easeOutQuad)
     {
-        GameObject newCardObject = CreateBoardCard(info, GetSevenPokerBoard().GetDealerPosition(), 0.3f);
+        GameObject newCardObject = CreateBoardCard(info, Start, 0.3f);
         Card_Base newCard = newCardObject.GetComponent<Card_Base>();
         newCard.TargetPlayer = player;
 
