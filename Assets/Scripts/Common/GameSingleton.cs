@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class GameSingleton : MonoBehaviour
 {
+<<<<<<< .merge_file_a01880
     public static GameSingleton Instance = null;    
 
     public GlobalTypes.GameKind GameKind = GlobalTypes.GameKind.Sudda;    
+=======
+    public GamePlayData GameData = null;
+    public static GameSingleton Instance = null;
+    public GlobalTypes.GameKind GameKind = GlobalTypes.GameKind.Sudda;
+>>>>>>> .merge_file_a04244
 
     private string GetArg(string name)
     {
@@ -25,6 +31,7 @@ public class GameSingleton : MonoBehaviour
 
     private void Init()
     {
+        GameData = new GamePlayData();
         //string FindGameKind = GetArg("gamekind");
         //if (FindGameKind != null)
         //{
@@ -43,6 +50,11 @@ public class GameSingleton : MonoBehaviour
         //}
     }
 
+    public void GameInit()
+    {
+        GameData.Init(GameKind);
+    }
+
     void Awake()
     {
         if (Instance == null)
@@ -52,7 +64,6 @@ public class GameSingleton : MonoBehaviour
             Init();
 
             DontDestroyOnLoad(gameObject);
-            
         }
         else
         {
