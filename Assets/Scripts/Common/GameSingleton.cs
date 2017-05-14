@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class GameSingleton : MonoBehaviour
 {
-    public static GameSingleton Instance = null;
-    public GlobalTypes.GameKind GameKind = GlobalTypes.GameKind.Sudda;
+    public static GameSingleton Instance = null;    
+
+    public GlobalTypes.GameKind GameKind = GlobalTypes.GameKind.Sudda;    
 
     private string GetArg(string name)
     {
@@ -68,4 +69,28 @@ public class GameSingleton : MonoBehaviour
 	void Update () {
 		
 	}
+
+
+    // ===========================================================================
+    //
+    //  PlayScene
+    //
+    // ===========================================================================
+    private static PlayScene PlayInst = null;
+
+    public static void SetPlayScene(PlayScene scene)
+    {
+        PlayInst = scene;
+    }
+    public static PlayScene GetBasePlayScene()
+    {
+        assert.set(PlayInst != null);
+        return PlayInst;
+    }
+    public static SevenPokerScene GetSevenPokerPlayScene()
+    {
+        assert.set(PlayInst != null);
+        assert.set(PlayInst is SevenPokerScene);
+        return PlayInst as SevenPokerScene;
+    }
 }

@@ -11,5 +11,10 @@ namespace GlobalTypes
         Hoola,
         Baduki,
     }
+
+    public enum MaxPlayer
+    {
+        SevenPoker = 5,
+    }
 }
 
