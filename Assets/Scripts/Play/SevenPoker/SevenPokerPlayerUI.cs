@@ -4,8 +4,21 @@ using UnityEngine;
 
 public class SevenPokerPlayerUI : PlayerUIBase
 {
-    PlayTypes.SevenPokerStep CurStep = PlayTypes.SevenPokerStep.None;
+    override protected void Awake()
+    {
+        base.Awake();
 
+        MasterObject = transform.Find("CardSetBG/Master").gameObject;
+        assert.set(MasterObject);
+        MasterObject.SetActive(false);
+    }
+
+
+    // ===========================================================================
+    //
+    //  Card
+    //
+    // ===========================================================================
     override public void AddCardClass(Card_Base cardClas)
     {
         base.AddCardClass(cardClas);
@@ -15,43 +28,58 @@ public class SevenPokerPlayerUI : PlayerUIBase
             switch( CurStep )
             {
                 case PlayTypes.SevenPokerStep.Begin:
-                    {                        
-                        cardClas.SetFrontView(true);
+                    {
+                        cardClas.SetCardView(PlayTypes.CardView.Front);
                     }
                     break;
             }
         }
     }
 
+    // ===========================================================================
+    //
+    //  게임 스탭
+    //
+    // ===========================================================================
+    PlayTypes.SevenPokerStep CurStep;
 
-    public void SetMode_StartUI()
-    {        
-        CardSet.spacing = GameSingleton.GetPlay().GetBoard().ToSevenPoker().CardSpacing_Choice;
-
-        CurStep = PlayTypes.SevenPokerStep.Begin;
-    }
-
-    public void SetMode_ChoiceUI()
+    public void SetStep_PlayerUI(PlayTypes.SevenPokerStep step)
     {
-        if( GetPlayer().ToSevenPoker().IsMyPlayer() == true )
+        CurStep = step;
+        switch ( step )
         {
-            gameObject.SetActive(false);
+            case PlayTypes.SevenPokerStep.Begin:
+                {
+                    CardSet.spacing = GameSingleton.GetPlay().GetBoard().ToSevenPoker().CardSpacing_Choice;
+                }
+                break;
+            case PlayTypes.SevenPokerStep.ChoiceCardShare_Complete:
+                {
+                    if (GetPlayer().ToSevenPoker().IsMyPlayer() == true)
+                    {
+                        gameObject.SetActive(false);
+                    }
+                }
+                break;
+            case PlayTypes.SevenPokerStep.ChoiceCardSelect:
+                {
+                    if (GetPlayer().ToSevenPoker().IsMyPlayer() == true)
+                    {
+                        gameObject.SetActive(true);
+
+                        CardUIList[0].SetCardView(PlayTypes.CardView.Dual);
+                        CardUIList[1].SetCardView(PlayTypes.CardView.Dual);
+                        CardUIList[2].SetCardView(PlayTypes.CardView.Dual);
+                    }
+
+                    CardSet.spacing = GameSingleton.GetPlay().GetBoard().ToSevenPoker().CardSpacing_Play;
+                }
+                break;
+            case PlayTypes.SevenPokerStep.CardShare_4:
+                {
+                    CardUIList[2].SetCardView(PlayTypes.CardView.Front);
+                }
+                break;
         }
-
-        CurStep = PlayTypes.SevenPokerStep.Choice;
-    }
-
-    public void SetMode_PlayUI()
-    {
-        if (GetPlayer().ToSevenPoker().IsMyPlayer() == true)
-        {
-            gameObject.SetActive(true);
-        }
-        CardSet.spacing = GameSingleton.GetPlay().GetBoard().ToSevenPoker().CardSpacing_Play;
-    }
-
-    public void SetMode_DieUI()
-    {
-        CardSet.spacing = GameSingleton.GetPlay().GetBoard().ToSevenPoker().CardSpacing_Die;
-    }
+    }    
 }

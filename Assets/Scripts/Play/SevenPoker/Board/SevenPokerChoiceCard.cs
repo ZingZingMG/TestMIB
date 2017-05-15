@@ -27,6 +27,33 @@ public class SevenPokerChoiceCard : MonoBehaviour
         CardSetTr = transform.Find("CardSet");
     }
 
+    void Update()
+    {
+        if( Input.GetKeyDown(KeyCode.Keypad1) )
+        {
+            OnClick_ChoiceCard(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            OnClick_ChoiceCard(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            OnClick_ChoiceCard(2);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            OnClick_ChoiceCard(3);
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if( CurStep == eCHOICE_STEP.ThrowSelect )
+            {
+                OnClick_ChoiceCard(ThrowSelectIndex);
+            }
+        }
+    }
+
     public void EnableChoice()
     {
         CurStep = eCHOICE_STEP.None;
@@ -77,7 +104,7 @@ public class SevenPokerChoiceCard : MonoBehaviour
 
                     Card_Base cardClass = CardList[ChoiceIndex];
 
-                    cardClass.SetFrontView(false);
+                    cardClass.SetCardView(PlayTypes.CardView.Back);
                     cardClass.SetEnableSelectBtn(false);
                     cardClass.ToTrump().SetEnableBackBtn(true);
 
@@ -90,7 +117,7 @@ public class SevenPokerChoiceCard : MonoBehaviour
                     if( ThrowSelectIndex == ChoiceIndex )
                     {
                         Card_Base cardClass = CardList[ChoiceIndex];
-                        cardClass.SetFrontView(true);
+                        cardClass.SetCardView(PlayTypes.CardView.Front);
                         cardClass.SetEnableSelectBtn(true);
                         cardClass.ToTrump().SetEnableBackBtn(false);
 
@@ -104,6 +131,12 @@ public class SevenPokerChoiceCard : MonoBehaviour
                     {
                         CurStep = eCHOICE_STEP.ViewSelect;
                         ViewSelectIndex = ChoiceIndex;
+
+                        // 버리고 나서의 선택카드 인덱싱 - 서버 전달 헷갈리지 말자
+                        if( ViewSelectIndex > ThrowSelectIndex )
+                        {
+                            --ViewSelectIndex;
+                        }
                         GameSingleton.GetPlay().ToSevenPoker().Send_ChoiceComplete( ThrowSelectIndex, ViewSelectIndex);
                     }
                 }

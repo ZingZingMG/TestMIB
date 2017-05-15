@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class OfflineUserInfo
 {
-    public int PositionIndex;
+    public int PlayerIndex;
     public int ID;
     public string Name;
 }
@@ -42,20 +42,16 @@ public partial class SevenPokerScene : PlayScene
         base.Awake();
     }
 
-    void OnDestroy()
-    {
-        OnCardShareCompleteDG = null;
-    }
-
+    
     // Use this for initialization
     void Start ()
     {
         // 입장 후 내 Player 셋팅
         if (IsObserverMode() == false)
         {
-            GetBoard().ToSevenPoker().LinkPlayerUI(MyInfo.PositionIndex);
+            GetBoard().ToSevenPoker().LinkPlayerUI(MyInfo.PlayerIndex);
 
-            MyPlayer = GetPlayer(MyInfo.PositionIndex).ToSevenPoker();
+            MyPlayer = GetPlayer(MyInfo.PlayerIndex).ToSevenPoker();
             MyPlayer.JoinPlayer();
         }
         else
@@ -67,10 +63,21 @@ public partial class SevenPokerScene : PlayScene
         // 다른 유저 플레이어 셋팅
         foreach (OfflineUserInfo info in UserInfoArray)
         {
-            GetPlayer(info.PositionIndex).JoinPlayer();
+            GetPlayer(info.PlayerIndex).JoinPlayer();
         }
 
-        StartCoroutine("Play_Start_Coroutine");
+        // 일단 첫유저를 마스터 셋팅 : 서버에서 정보 받아 변경
+        foreach(PlayerBase player in PlayerList )
+        {
+            if(player.GetPlayPositionType() == PlayTypes.PlayPositionType.Wait)
+            {
+                SetMasterPlayer(player);
+                break;
+            }
+        }
+
+
+        SetStep_Scene(PlayTypes.SevenPokerStep.Begin);
 	}
 
     // ===========================================================================

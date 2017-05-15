@@ -16,13 +16,13 @@ public class CardInfoBase
     }    
 
     public bool EnableSelectBtn = false;    
-    public bool FrontView = true;
-    public int Number = 1;
+    public PlayTypes.CardView CardView = PlayTypes.CardView.Back;
+    public int Number = 0;
 
 
     virtual public void Clone(CardInfoBase src)
     {
-        FrontView = src.FrontView;
+        CardView = src.CardView;
         Number = src.Number;
         EnableSelectBtn = src.EnableSelectBtn;
     }   

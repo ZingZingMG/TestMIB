@@ -6,14 +6,18 @@ using UnityEngine.UI;
 public class Card_Trump : Card_Base
 {    
     public CardInfo_Trump CardInfo = new CardInfo_Trump();
-    Button BackBtn;
+    GameObject BackBtn;
+    GameObject CardMask;
 
     override protected void Awake()
     {
         base.Awake();
 
-        BackBtn = transform.Find("Image/BackBtn").GetComponent<Button>();
+        BackBtn = transform.Find("Image/BackBtn").gameObject;
         assert.set(BackBtn);
+
+        CardMask = transform.Find("Image/Mask").gameObject;
+        assert.set(CardMask);
     }
 
     protected override void OnDestroy()
@@ -40,7 +44,8 @@ public class Card_Trump : Card_Base
     {
         base._ApplyCardInfo();
 
-        BackBtn.gameObject.SetActive(GetCardInfo().ToTrump().EnableBackBtn);
+        BackBtn.SetActive(GetCardInfo().ToTrump().EnableBackBtn);
+        CardMask.SetActive(GetCardInfo().CardView == PlayTypes.CardView.Dual);
     }
 
    

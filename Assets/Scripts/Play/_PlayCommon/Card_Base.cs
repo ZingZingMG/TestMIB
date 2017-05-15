@@ -17,14 +17,14 @@ abstract public class Card_Base : MonoBehaviour
     }    
 
     Image CardImage;
-    Button SelectBtn;
+    GameObject SelectBtn;
 
     virtual protected void Awake()
     {
         CardImage = transform.Find("Image").GetComponent<Image>();
         assert.set(CardImage);
 
-        SelectBtn = transform.Find("SelectBtn").GetComponent<Button>();
+        SelectBtn = transform.Find("SelectBtn").gameObject;
         assert.set(SelectBtn);
     }
 
@@ -49,14 +49,14 @@ abstract public class Card_Base : MonoBehaviour
         _ApplyCardInfo();
     }
 
-    public void SetFrontView(bool frontView)
+    public void SetCardView(PlayTypes.CardView cardView)
     {
-        if( GetCardInfo().FrontView == frontView )
+        if( GetCardInfo().CardView == cardView)
         {
             return;
         }
 
-        GetCardInfo().FrontView = frontView;
+        GetCardInfo().CardView = cardView;
         _ApplyCardInfo();        
     }
 
@@ -79,12 +79,12 @@ abstract public class Card_Base : MonoBehaviour
 
         if (GetCardInfo().EnableSelectBtn == true)
         {
-            SelectBtn.gameObject.SetActive(true);
+            SelectBtn.SetActive(true);
             GetCardImage().raycastTarget = false;
         }
         else
         {
-            SelectBtn.gameObject.SetActive(false);
+            SelectBtn.SetActive(false);
             GetCardImage().raycastTarget = true;
         }        
     }

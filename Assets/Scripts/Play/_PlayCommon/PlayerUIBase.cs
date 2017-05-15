@@ -11,7 +11,7 @@ public class PlayerUIBase : MonoBehaviour
         return this as SevenPokerPlayerUI;
     }
 
-    void Awake()
+    virtual protected void Awake()
     {
         assert.set(CardSet);
         CardSet.cellSize = GameSingleton.GetPlay().CardSize;
@@ -37,6 +37,20 @@ public class PlayerUIBase : MonoBehaviour
 
     // ===========================================================================
     //
+    //  Master
+    //
+    // ===========================================================================
+    protected GameObject MasterObject = null;
+    public void SetMasterUI(bool master)
+    {
+        if( MasterObject != null )
+        {
+            MasterObject.SetActive(master);
+        }
+    }
+
+    // ===========================================================================
+    //
     //  Player
     //
     // ===========================================================================
@@ -50,7 +64,7 @@ public class PlayerUIBase : MonoBehaviour
     //
     // ===========================================================================
     // 카드들 리스트
-    List<Card_Base> CardUIList = new List<Card_Base>();
+    protected List<Card_Base> CardUIList = new List<Card_Base>();
 
     virtual public void AddCardClass(Card_Base cardClass)
     {        

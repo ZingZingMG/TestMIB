@@ -4,9 +4,6 @@ using UnityEngine;
 
 public partial class SevenPokerScene : PlayScene
 {
-    public delegate void CardShareCompleteDelegate();
-    protected CardShareCompleteDelegate OnCardShareCompleteDG = null;
-
     Queue<CardInfo_Trump> RecvCardShareQueue = new Queue<CardInfo_Trump>();
 
     public void Send_PlayReady()
@@ -22,7 +19,7 @@ public partial class SevenPokerScene : PlayScene
                     if( player.IsPlay() )
                     {
                         CardInfo_Trump cardInfo = new CardInfo_Trump();
-                        cardInfo.FrontView = false;
+                        cardInfo.CardView = PlayTypes.CardView.Back;
                         cardInfo.Number = Random.Range(1, 14);
                         cardInfo.Mark = (PlayTypes.TrumpMark)Random.Range(0, 4);
                         cardList.Add(cardInfo);
@@ -40,11 +37,11 @@ public partial class SevenPokerScene : PlayScene
         {
             RecvCardShareQueue.Enqueue(info);
         }
-
-        OnCardShareCompleteDG = Play_Choice;
-        StartCoroutine("CardShareCoroutine");
+        
+        StartCoroutine("CardShareCoroutine", PlayTypes.SevenPokerStep.ChoiceCardShare_Complete);
     }
-    
+
+    // OpenCardIndex 는 ThrowCardIndex 버리고 나서의 인덱스 계산
     public void Send_ChoiceComplete( int ThrowCardIndex, int OpenCardIndex )
     {
         if (IsOnline() == false)
@@ -57,21 +54,29 @@ public partial class SevenPokerScene : PlayScene
 
         }
     }
-    
+
+
+    // OpenCardIndex 는 ThrowCardIndex 버리고 나서의 인덱스 계산
     public void Recv_UserChoiceComplete(int PlayerIndex, int ThrowCardIndex, int OpenCardIndex)
     {
         SevenPokerPlayer player = GameSingleton.GetPlay().GetPlayer(PlayerIndex).ToSevenPoker();
         if ( player.IsMyPlayer() == true )
         {
-            player.CardMoveToTail(OpenCardIndex);
+            // 버림 계산 후에
             player.RemoveCard_ByIndex(ThrowCardIndex);
-            GameSingleton.GetPlay().GetBoard().ToSevenPoker().SetMode_Play();
+            // 뒤로갈 카드 계산
+            player.CardMoveToTail(OpenCardIndex);            
+
+            GameSingleton.GetPlay().GetBoard().ToSevenPoker().SetStep_Board(PlayTypes.SevenPokerStep.ChoiceCardSelect);
+            player.SetStep_Player(PlayTypes.SevenPokerStep.ChoiceCardSelect);
+
         }
         else
         {
             player.RemoveCard_ByIndex(0);
+            player.SetStep_Player(PlayTypes.SevenPokerStep.ChoiceCardSelect);
         }
 
-        player.SetMode_Play();
+        
     }
 }

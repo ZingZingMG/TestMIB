@@ -54,9 +54,6 @@ public abstract class PlayScene : MonoBehaviour
         assert.set(GetMaxPlayer() > 1);
         last.SetNextPlayer(first);
         first.SetPrevPlayer(last);
-
-        // 일단 첫유저를 마스터 셋팅 : 서버에서 정보 받아 변경
-        MasterPlayer = first;        
     }
 
     void OnDestroy()
@@ -89,7 +86,7 @@ public abstract class PlayScene : MonoBehaviour
     // 게임에 참여 중인 유저
     protected List<PlayerBase> PlayerList = new List<PlayerBase>();
     // 마스터플레이어 (선)
-    protected PlayerBase MasterPlayer = null;
+    private PlayerBase MasterPlayer = null;
     // 내가 관전 중인가
     public bool ObserverMode = false;
 
@@ -97,6 +94,21 @@ public abstract class PlayScene : MonoBehaviour
     public bool IsObserverMode() { return ObserverMode; }
     public PlayerBase GetPlayer(int PlayerIndex) { return PlayerList[PlayerIndex]; }
     public List<PlayerBase> GetPlayerList() { return PlayerList; }
+
+    public PlayerBase GetMasterPlayer()
+    {
+        assert.set(MasterPlayer);
+        return MasterPlayer;
+    }
+    public void SetMasterPlayer( PlayerBase masterPlayer )
+    {
+        if( MasterPlayer != null )
+        {
+            MasterPlayer.SetMaster(false);
+        }
+        MasterPlayer = masterPlayer;
+        MasterPlayer.SetMaster(true);
+    }
 
     // ===========================================================================
     //
@@ -164,13 +176,15 @@ public abstract class PlayScene : MonoBehaviour
         int SpriteIdx = 0;
         if( cardInfo is CardInfo_Trump )
         {
-            if( cardInfo.FrontView == true )
-            {                
-                SpriteIdx = (int)cardInfo.ToTrump().Mark * 13 + cardInfo.ToTrump().Number - 1;
+            if( cardInfo.CardView == PlayTypes.CardView.Back )
+            {
+                SpriteIdx = 12; 
             }
             else
             {
-                SpriteIdx = 12;
+                // 정면을 보여주기로 하였지만 카드내용이 기입되지 아니함
+                assert.set(cardInfo.ToTrump().Number > 0);
+                SpriteIdx = (int)cardInfo.ToTrump().Mark * 13 + cardInfo.ToTrump().Number - 1;
             }            
         }
         else

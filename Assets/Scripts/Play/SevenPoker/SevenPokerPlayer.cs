@@ -25,23 +25,8 @@ public class SevenPokerPlayer : PlayerBase
         base.ResetPlay();        
     }
 
-    public void SetMode_Start()
+    public void SetStep_Player(PlayTypes.SevenPokerStep step)
     {
-        GetPlayerUI().ToSevenPoker().SetMode_StartUI();
+        GetPlayerUI().ToSevenPoker().SetStep_PlayerUI(step);
     }
-
-    public void SetMode_Choice()
-    {
-        GetPlayerUI().ToSevenPoker().SetMode_ChoiceUI();
-    }
-
-    public void SetMode_Play()
-    {
-        GetPlayerUI().ToSevenPoker().SetMode_PlayUI();
-    }
-
-    public void SetMode_Die()
-    {
-        GetPlayerUI().ToSevenPoker().SetMode_DieUI();
-    }    
 }

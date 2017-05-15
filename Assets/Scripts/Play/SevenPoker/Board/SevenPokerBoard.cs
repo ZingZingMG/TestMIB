@@ -14,57 +14,29 @@ public class SevenPokerBoard : BoardBase
     public Vector2 CardSpacing_Play;
     public Vector2 CardSpacing_Die;
 
-    public void SetMode_Start()
+    public void SetStep_Board(PlayTypes.SevenPokerStep step)
     {
-        ChoiceCard.DisableChoice();
-
-        var PlayerList = GameSingleton.GetPlay().GetPlayerList();
-        foreach (PlayerBase player in PlayerList)
-        {
-            assert.set(player is SevenPokerPlayer);
-            if (player.IsPlay())
-            {
-                SevenPokerPlayer spPlayer = player as SevenPokerPlayer;
-                spPlayer.SetMode_Start();
-            }
+        switch (step)
+        {                      
+            case PlayTypes.SevenPokerStep.Begin:
+                {
+                    ChoiceCard.DisableChoice();
+                }
+                break;
+            case PlayTypes.SevenPokerStep.ChoiceCardShare_Complete:
+                {
+                    if (GameSingleton.GetPlay().IsObserverMode() == false)
+                    {
+                        ChoiceCard.EnableChoice();
+                    }
+                }
+                break;
+            case PlayTypes.SevenPokerStep.ChoiceCardSelect:
+                {
+                    ChoiceCard.DisableChoice();
+                }
+                break;
         }
-    }
-
-    public void SetMode_Choice()
-    {
-        if( GameSingleton.GetPlay().IsObserverMode() == false )
-        {
-            ChoiceCard.EnableChoice();
-        }
-
-        var PlayerList = GameSingleton.GetPlay().GetPlayerList();
-        foreach (PlayerBase player in PlayerList)
-        {
-            assert.set(player is SevenPokerPlayer);
-            if (player.IsPlay())
-            {
-                SevenPokerPlayer spPlayer = player as SevenPokerPlayer;
-                spPlayer.SetMode_Choice();
-            }
-        }
-    }
-
-    public void SetMode_Play()
-    {
-        ChoiceCard.DisableChoice();
-
-        // 유저의 SetMode_Play 는 개별적으로 처리
-
-        //var PlayerList = GameSingleton.GetPlay().GetPlayerList();
-        //foreach (PlayerBase player in PlayerList)
-        //{
-        //    assert.set(player is SevenPokerPlayer);
-        //    if (player.IsPlay())
-        //    {
-        //        SevenPokerPlayer spPlayer = player as SevenPokerPlayer;
-        //        spPlayer.SetMode_Play();
-        //    }
-        //}
     }
 
     // ===========================================================================
