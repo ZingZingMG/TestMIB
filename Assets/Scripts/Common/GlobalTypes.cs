@@ -24,5 +24,10 @@ namespace GlobalTypes
         Free,
         PokerChip,
     }
+
+    public enum MaxPlayer
+    {
+        SevenPoker = 5,
+    }
 }
 

@@ -74,4 +74,22 @@ public class GameSingleton : MonoBehaviour
 	void Update () {
 		
 	}
+
+
+    // ===========================================================================
+    //
+    //  PlayScene
+    //
+    // ===========================================================================
+    private static PlayScene PlayInst = null;
+
+    public static void SetPlay(PlayScene scene)
+    {
+        PlayInst = scene;
+    }
+    public static PlayScene GetPlay()
+    {
+        assert.set(PlayInst != null);
+        return PlayInst;
+    }    
 }
