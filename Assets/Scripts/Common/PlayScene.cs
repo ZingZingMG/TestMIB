@@ -37,7 +37,7 @@ public abstract class PlayScene : MonoBehaviour
             PlayerBase newPlayer = _CreatePlayer();
             PlayerList.Add(newPlayer);
 
-            newPlayer.SetPositionIndex(i);
+            newPlayer.SetPlayerIndex(i);
             if(last != null )
             {
                 last.SetNextPlayer(newPlayer);
@@ -86,7 +86,7 @@ public abstract class PlayScene : MonoBehaviour
     //  Player
     //
     // ===========================================================================
-    // 게임에 참여 중인 유저 ( 관전자, 중도참가 관전자 미포함 )
+    // 게임에 참여 중인 유저
     protected List<PlayerBase> PlayerList = new List<PlayerBase>();
     // 마스터플레이어 (선)
     protected PlayerBase MasterPlayer = null;
@@ -96,6 +96,7 @@ public abstract class PlayScene : MonoBehaviour
     // 내가 플레이 중이라면
     public bool IsObserverMode() { return ObserverMode; }
     public PlayerBase GetPlayer(int PlayerIndex) { return PlayerList[PlayerIndex]; }
+    public List<PlayerBase> GetPlayerList() { return PlayerList; }
 
     // ===========================================================================
     //
@@ -113,44 +114,48 @@ public abstract class PlayScene : MonoBehaviour
     // 해당 카드의 사이즈 - 이 사이즈에 맞춰서 모든 인터페이스 사이즈를 조절해준다.
     public Vector2 CardSize;
 
-    public GameObject CreateCard(Transform parent, CardInfoBase cardInfo)
+    public Card_Base CreateCard(Transform parent, CardInfoBase cardInfo)
     {
-        GameObject CardObject = null;
+        Card_Base CardClass = null;
         if (cardInfo is CardInfo_Trump)
         {
             GameObject prefab = GlobalFunc.Load("Play/_PlayCommon/TrumpCard");
-            CardObject = Instantiate<GameObject>(prefab, parent);
+            GameObject CardObject = Instantiate<GameObject>(prefab, parent);
             assert.set(CardObject);
 
             Card_Trump newCardClass = CardObject.GetComponent<Card_Trump>();
             newCardClass.CardInfo.Clone(cardInfo);
+
+            CardClass = newCardClass;
         }
         else
         {
             assert.set(cardInfo is CardInfo_Gostop);
             GameObject prefab = GlobalFunc.Load("Play/_PlayCommon/GostopCard");
-            CardObject = Instantiate<GameObject>(prefab, parent);
+            GameObject CardObject = Instantiate<GameObject>(prefab, parent);
             assert.set(CardObject);
 
             Card_Gostop newCardClass = CardObject.GetComponent<Card_Gostop>();
             newCardClass.CardInfo.Clone(cardInfo);
+
+            CardClass = newCardClass;
         }
 
-        assert.set(CardObject);
-        return CardObject;
+        assert.set(CardClass);
+        return CardClass;
     }
 
-    public GameObject CreateBoardCard(CardInfoBase cardInfo, Vector3 Position, float Alpha = 1.0f)
-    {        
-        GameObject CardObject = CreateCard(GetBoard().transform, cardInfo);
-        assert.set(CardObject);
-        CardObject.transform.position = Position;
+    public Card_Base CreateBoardCard(CardInfoBase cardInfo, Vector3 Position, float Alpha = 1.0f)
+    {
+        Card_Base CardClass = CreateCard(GetBoard().transform, cardInfo);
+        assert.set(CardClass);
+        CardClass.transform.position = Position;
         if(Alpha < 1.0f )
         {
-            GlobalFunc.SetAlpha(CardObject.GetComponent<Image>(), Alpha);
+            GlobalFunc.SetAlpha(CardClass.GetCardImage(), Alpha);
         }
 
-        return CardObject;
+        return CardClass;
     }
 
     public Sprite GetCardSprite(CardInfoBase cardInfo)
@@ -159,8 +164,14 @@ public abstract class PlayScene : MonoBehaviour
         int SpriteIdx = 0;
         if( cardInfo is CardInfo_Trump )
         {
-            CardInfo_Trump TrumpInfo = cardInfo as CardInfo_Trump;
-            SpriteIdx = (int)TrumpInfo.Mark * 13 + TrumpInfo.Number - 1;
+            if( cardInfo.FrontView == true )
+            {                
+                SpriteIdx = (int)cardInfo.ToTrump().Mark * 13 + cardInfo.ToTrump().Number - 1;
+            }
+            else
+            {
+                SpriteIdx = 12;
+            }            
         }
         else
         {
@@ -179,24 +190,23 @@ public abstract class PlayScene : MonoBehaviour
     //
     // ===========================================================================
 
-    virtual public void OnCompleteCardShareToPlayer(Card_Base cardObject)
+    virtual public void OnCompleteCardShareToPlayer(Card_Base cardClass)
     {
-        assert.set(cardObject.TargetPlayer);
-        cardObject.TargetPlayer.AddCard_ByGameObject(cardObject.gameObject);
+        assert.set(cardClass.TargetPlayer);
+        cardClass.TargetPlayer.AddCard_ByClass(cardClass);
     }
     
     protected void _CardShareToPlayer( CardInfoBase info, PlayerBase player, Vector3 Start, float time, iTween.EaseType easeType = iTween.EaseType.easeOutQuad)
     {
-        GameObject newCardObject = CreateBoardCard(info, Start, 0.3f);
-        Card_Base newCard = newCardObject.GetComponent<Card_Base>();
-        newCard.TargetPlayer = player;
+        Card_Base newCardClass = CreateBoardCard(info, Start, 0.3f);
+        newCardClass.TargetPlayer = player;
 
-        iTween.MoveTo(newCardObject,
+        iTween.MoveTo(  newCardClass.gameObject,
                         iTween.Hash("position", player.GetPlayerUI().GetNextCardPosition(),
                                     "easetype", easeType,
                                     "oncomplete", "OnCompleteCardShareToPlayer",
                                     "oncompletetarget", gameObject,
-                                    "oncompleteparams", newCard,
+                                    "oncompleteparams", newCardClass,
                                     "time", time)
                        );
     }    

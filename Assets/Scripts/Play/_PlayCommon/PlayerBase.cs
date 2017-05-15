@@ -22,29 +22,48 @@ public class PlayerBase
     [System.NonSerialized]
     public List<CardInfoBase> CardList = new List<CardInfoBase>();
 
-    public void AddCard_ByInfo(CardInfoBase cardInfo)
-    {
-        CardList.Add(cardInfo);
+    //public void AddCard_ByInfo(CardInfoBase cardInfo, Transform cardSet = null)
+    //{
+    //    CardList.Add(cardInfo);
 
-        // 카드 오브젝트 생성        
-        GameObject cardObject = GameSingleton.GetPlay().CreateCard(GetPlayerUI().GetCardSet(), cardInfo);
-        assert.set(cardObject);
+    //    // 카드 오브젝트 생성
+    //    if( cardSet == null )
+    //    {
+    //        cardSet = GetPlayerUI().GetCardSet();
+    //    }
+    //    Card_Base cardClass = GameSingleton.GetPlay().CreateCard(cardSet, cardInfo);
+    //    assert.set(cardClass);
 
-        GetPlayerUI().AddCardObject(cardObject);
-    }
+    //    GetPlayerUI().AddCardClass(cardClass);
+    //}
 
-    public void AddCard_ByGameObject(GameObject cardObject)
+    public void AddCard_ByClass(Card_Base cardClass)
     {
         // 부모 연결
-        cardObject.transform.SetParent(GetPlayerUI().GetCardSet());
+        cardClass.transform.SetParent(GetPlayerUI().GetCardSet());
         // 알파 변동
-        GlobalFunc.SetAlpha(cardObject.GetComponent<Image>(), 1.0f);
+        GlobalFunc.SetAlpha(cardClass.GetCardImage(), 1.0f);
 
-        Card_Base card = cardObject.GetComponent<Card_Base>();
-        assert.set(card);
-        CardList.Add(card.GetCardInfo());
+        CardList.Add(cardClass.GetCardInfo());
+        GetPlayerUI().AddCardClass(cardClass);
+    }
 
-        GetPlayerUI().AddCardObject(cardObject);
+    public void CardMoveToTail(int CardIndex)
+    {
+        assert.set(CardList.Count > CardIndex && CardIndex >= 0);
+        CardInfoBase info = CardList[CardIndex];
+        CardList.RemoveAt(CardIndex);
+        CardList.Add(info);
+
+        GetPlayerUI().CardMoveToTail(CardIndex);
+    }
+
+    public void RemoveCard_ByIndex(int CardIndex )
+    {
+        assert.set(CardList.Count > CardIndex && CardIndex >= 0);
+        CardList.RemoveAt(CardIndex);
+
+        GetPlayerUI().RemoveCard_ByIndex(CardIndex);
     }
 
     // ===========================================================================
@@ -52,11 +71,11 @@ public class PlayerBase
     //  기본 플레이어 정보
     //
     // ===========================================================================
-    protected int PositionIdx = -1;
+    protected int PlayerIndex = -1;
     protected PlayTypes.PlayPositionType PlayPosType = PlayTypes.PlayPositionType.None;
 
-    public void SetPositionIndex(int positionIdx) { PositionIdx = positionIdx; }
-    public int GetPositionIndex() { assert.set(PositionIdx >= 0); return PositionIdx; }    
+    public void SetPlayerIndex(int playerIndex) { PlayerIndex = playerIndex; }
+    public int GetPlayerIndex() { assert.set(PlayerIndex >= 0); return PlayerIndex; }    
     public PlayTypes.PlayPositionType GetPlayPositionType() { return PlayPosType; }
 
     // ===========================================================================
@@ -69,7 +88,7 @@ public class PlayerBase
     
     public void SetPlayerUI( PlayerUIBase ui) { UI = ui; UI.SetPlayer(this); }
     public PlayerUIBase GetPlayerUI() { assert.set(UI); return UI; }
-    public SevenPokerPlayerUI GetSevenPokerPlayerUI() { assert.set(UI); assert.set(UI is SevenPokerPlayerUI); return UI as SevenPokerPlayerUI; }
+    
 
 
     // ===========================================================================

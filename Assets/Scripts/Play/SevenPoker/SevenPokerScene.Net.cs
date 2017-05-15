@@ -9,7 +9,7 @@ public partial class SevenPokerScene : PlayScene
 
     Queue<CardInfo_Trump> RecvCardShareQueue = new Queue<CardInfo_Trump>();
 
-    public void SendReadyPlay()
+    public void Send_PlayReady()
     {
         if( IsOnline() == false )
         {   
@@ -22,6 +22,7 @@ public partial class SevenPokerScene : PlayScene
                     if( player.IsPlay() )
                     {
                         CardInfo_Trump cardInfo = new CardInfo_Trump();
+                        cardInfo.FrontView = false;
                         cardInfo.Number = Random.Range(1, 14);
                         cardInfo.Mark = (PlayTypes.TrumpMark)Random.Range(0, 4);
                         cardList.Add(cardInfo);
@@ -40,12 +41,37 @@ public partial class SevenPokerScene : PlayScene
             RecvCardShareQueue.Enqueue(info);
         }
 
-        OnCardShareCompleteDG = OnCompleteChoiceCardShare;
+        OnCardShareCompleteDG = Play_Choice;
         StartCoroutine("CardShareCoroutine");
     }
-
-    public void OnCompleteChoiceCardShare()
+    
+    public void Send_ChoiceComplete( int ThrowCardIndex, int OpenCardIndex )
     {
-        GetBoard().ToSevenPoker().SetMode_Choice();
+        if (IsOnline() == false)
+        {
+            int PlayerIndex = GameSingleton.GetPlay().ToSevenPoker().GetMyPlayer().GetPlayerIndex();
+            Recv_UserChoiceComplete(PlayerIndex, ThrowCardIndex, OpenCardIndex);
+        }
+        else
+        {
+
+        }
+    }
+    
+    public void Recv_UserChoiceComplete(int PlayerIndex, int ThrowCardIndex, int OpenCardIndex)
+    {
+        SevenPokerPlayer player = GameSingleton.GetPlay().GetPlayer(PlayerIndex).ToSevenPoker();
+        if ( player.IsMyPlayer() == true )
+        {
+            player.CardMoveToTail(OpenCardIndex);
+            player.RemoveCard_ByIndex(ThrowCardIndex);
+            GameSingleton.GetPlay().GetBoard().ToSevenPoker().SetMode_Play();
+        }
+        else
+        {
+            player.RemoveCard_ByIndex(0);
+        }
+
+        player.SetMode_Play();
     }
 }

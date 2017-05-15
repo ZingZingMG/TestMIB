@@ -4,9 +4,31 @@ using UnityEngine;
 
 public class SevenPokerPlayerUI : PlayerUIBase
 {
-    public void SetMode_StartUI()
+    PlayTypes.SevenPokerStep CurStep = PlayTypes.SevenPokerStep.None;
+
+    override public void AddCardClass(Card_Base cardClas)
     {
+        base.AddCardClass(cardClas);
+        
+        if( GetPlayer().ToSevenPoker().IsMyPlayer() == true )
+        {
+            switch( CurStep )
+            {
+                case PlayTypes.SevenPokerStep.Begin:
+                    {                        
+                        cardClas.SetFrontView(true);
+                    }
+                    break;
+            }
+        }
+    }
+
+
+    public void SetMode_StartUI()
+    {        
         CardSet.spacing = GameSingleton.GetPlay().GetBoard().ToSevenPoker().CardSpacing_Choice;
+
+        CurStep = PlayTypes.SevenPokerStep.Begin;
     }
 
     public void SetMode_ChoiceUI()
@@ -14,7 +36,9 @@ public class SevenPokerPlayerUI : PlayerUIBase
         if( GetPlayer().ToSevenPoker().IsMyPlayer() == true )
         {
             gameObject.SetActive(false);
-        }        
+        }
+
+        CurStep = PlayTypes.SevenPokerStep.Choice;
     }
 
     public void SetMode_PlayUI()

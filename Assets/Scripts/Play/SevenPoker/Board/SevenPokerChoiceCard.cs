@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class SevenPokerChoiceCard : MonoBehaviour
 {
-    [System.NonSerialized]
     GameObject ThrowText;
-    [System.NonSerialized]
     GameObject OpenText;
-    [System.NonSerialized]
     Transform CardSetTr;
+
+    enum eCHOICE_STEP
+    {
+        None,
+        ThrowSelect,
+        ViewSelect,
+    }
+    eCHOICE_STEP CurStep;
+    int ThrowSelectIndex;
+    int ViewSelectIndex;
+
+    List<Card_Base> CardList = new List<Card_Base>();
 
     void Awake()
     {
@@ -20,22 +29,86 @@ public class SevenPokerChoiceCard : MonoBehaviour
 
     public void EnableChoice()
     {
+        CurStep = eCHOICE_STEP.None;
+        ViewSelectIndex = -1;
+        ThrowSelectIndex = -1;
         gameObject.SetActive(true);
         ThrowText.SetActive(true);
         OpenText.SetActive(false);
 
-        var list = GameSingleton.GetPlay().ToSevenPoker().GetMyPlayer().CardList;
+        for( int i=CardList.Count-1; i>=0; --i )
+        {
+            Destroy(CardList[i].gameObject);
+        }
+        CardList.Clear();
+
+        PlayerBase player = GameSingleton.GetPlay().ToSevenPoker().GetMyPlayer();
+        var list = player.CardList;
         assert.set(list.Count == 4);
         for( int i=0; i<list.Count; ++i )
         {
-            string cardpath = string.Format("Card{0:00}/Front/TrumpCard", i+1);
-            Card_Trump card = CardSetTr.Find(cardpath).GetComponent<Card_Trump>();
-            card.SetInfo(list[i]);
-        }
+            CardInfo_Trump info = new CardInfo_Trump();
+            info.Clone(list[i]);
+            info.EnableSelectBtn = true;
+                                    
+            Card_Base cardClass = GameSingleton.GetPlay().CreateCard(CardSetTr, info);
+            cardClass.SetSelectBtnDelegate(OnClick_ChoiceCard, i);
+            cardClass.ToTrump().SetBackBtnDelegate(OnClick_ChoiceCard, i);                        
+            CardList.Add(cardClass);
+        }              
     }
 
     public void DisableChoice()
     {
         gameObject.SetActive(false);
     }
+
+    public void OnClick_ChoiceCard(int ChoiceIndex)
+    {
+        assert.set(ChoiceIndex < 4);
+        assert.set(ChoiceIndex >= 0);
+
+        switch (CurStep)
+        {
+            case eCHOICE_STEP.None:
+                {
+                    CurStep = eCHOICE_STEP.ThrowSelect;
+                    ThrowSelectIndex = ChoiceIndex;
+
+                    Card_Base cardClass = CardList[ChoiceIndex];
+
+                    cardClass.SetFrontView(false);
+                    cardClass.SetEnableSelectBtn(false);
+                    cardClass.ToTrump().SetEnableBackBtn(true);
+
+                    ThrowText.SetActive(false);
+                    OpenText.SetActive(true);
+                }
+                break;
+            case eCHOICE_STEP.ThrowSelect:
+                {
+                    if( ThrowSelectIndex == ChoiceIndex )
+                    {
+                        Card_Base cardClass = CardList[ChoiceIndex];
+                        cardClass.SetFrontView(true);
+                        cardClass.SetEnableSelectBtn(true);
+                        cardClass.ToTrump().SetEnableBackBtn(false);
+
+                        ThrowText.SetActive(true);
+                        OpenText.SetActive(false);
+
+                        CurStep = eCHOICE_STEP.None;
+                        ThrowSelectIndex = -1;
+                    }
+                    else
+                    {
+                        CurStep = eCHOICE_STEP.ViewSelect;
+                        ViewSelectIndex = ChoiceIndex;
+                        GameSingleton.GetPlay().ToSevenPoker().Send_ChoiceComplete( ThrowSelectIndex, ViewSelectIndex);
+                    }
+                }
+                break;
+        }
+    }
+    
 }

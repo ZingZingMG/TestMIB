@@ -18,5 +18,12 @@ namespace PlayTypes
         Heart,
         Clover,
     }
+
+    public enum SevenPokerStep
+    {
+        None,
+        Begin,
+        Choice,
+    }
 }
 

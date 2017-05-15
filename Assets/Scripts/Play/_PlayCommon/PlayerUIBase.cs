@@ -5,6 +5,12 @@ using UnityEngine.UI;
 
 public class PlayerUIBase : MonoBehaviour
 {
+    public SevenPokerPlayerUI ToSevenPoker()
+    {
+        assert.set(this is SevenPokerPlayerUI);
+        return this as SevenPokerPlayerUI;
+    }
+
     void Awake()
     {
         assert.set(CardSet);
@@ -46,11 +52,26 @@ public class PlayerUIBase : MonoBehaviour
     // 카드들 리스트
     List<Card_Base> CardUIList = new List<Card_Base>();
 
-    public void AddCardObject(GameObject cardObject)
+    virtual public void AddCardClass(Card_Base cardClass)
+    {        
+        CardUIList.Add(cardClass);
+    }
+
+    public void CardMoveToTail(int CardIndex)
     {
-        Card_Base card = cardObject.GetComponent<Card_Base>();
-        assert.set(card);
-        CardUIList.Add(card);
+        assert.set(CardUIList.Count > CardIndex && CardIndex >= 0);
+        Card_Base cardClass = CardUIList[CardIndex];
+        CardUIList.RemoveAt(CardIndex);
+        CardUIList.Add(cardClass);
+
+        cardClass.transform.SetAsLastSibling();
+    }
+
+    public void RemoveCard_ByIndex(int CardIndex)
+    {
+        assert.set(CardUIList.Count > CardIndex && CardIndex >= 0);
+        Destroy(CardUIList[CardIndex].gameObject);
+        CardUIList.RemoveAt(CardIndex);
     }
 
     // ===========================================================================

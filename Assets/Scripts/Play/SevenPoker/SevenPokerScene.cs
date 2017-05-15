@@ -70,7 +70,7 @@ public partial class SevenPokerScene : PlayScene
             GetPlayer(info.PositionIndex).JoinPlayer();
         }
 
-        StartCoroutine("StartPlay");
+        StartCoroutine("Play_Start_Coroutine");
 	}
 
     // ===========================================================================

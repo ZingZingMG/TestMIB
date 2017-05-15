@@ -10,7 +10,6 @@ public class SevenPokerPlayer : PlayerBase
         return (GameSingleton.GetPlay().ToSevenPoker().GetMyPlayer() == this);
     }
 
-
     override public void JoinPlayer()
     {
         base.JoinPlayer();
@@ -23,26 +22,26 @@ public class SevenPokerPlayer : PlayerBase
 
     override public void ResetPlay()
     {
-        base.ResetPlay();
+        base.ResetPlay();        
     }
 
     public void SetMode_Start()
     {
-        GetSevenPokerPlayerUI().SetMode_StartUI();
+        GetPlayerUI().ToSevenPoker().SetMode_StartUI();
     }
 
     public void SetMode_Choice()
     {
-        GetSevenPokerPlayerUI().SetMode_ChoiceUI();
+        GetPlayerUI().ToSevenPoker().SetMode_ChoiceUI();
     }
 
     public void SetMode_Play()
     {
-        GetSevenPokerPlayerUI().SetMode_PlayUI();
+        GetPlayerUI().ToSevenPoker().SetMode_PlayUI();
     }
 
     public void SetMode_Die()
     {
-        GetSevenPokerPlayerUI().SetMode_DieUI();
+        GetPlayerUI().ToSevenPoker().SetMode_DieUI();
     }    
 }
