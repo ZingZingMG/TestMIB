@@ -11,5 +11,18 @@ namespace GlobalTypes
         Gostop,
         Sudda,
     }
+
+    public enum PokerChannelType
+    {
+        Chobo,
+        Hasu,
+        Joongsu,
+        Ama,
+        Semipro,
+        Pro,
+        Lasvegas,
+        Free,
+        PokerChip,
+    }
 }
 

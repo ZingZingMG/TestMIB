@@ -11,7 +11,7 @@ public class LobbyScene : MonoBehaviour
 
     }
 
-    public void MakeRoom()
+    public void OnClickMakeRoom()
     {
 
     }
