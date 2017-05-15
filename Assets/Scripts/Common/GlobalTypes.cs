@@ -12,6 +12,19 @@ namespace GlobalTypes
         Sudda,
     }
 
+    public enum PokerChannelType
+    {
+        Chobo,
+        Hasu,
+        Joongsu,
+        Ama,
+        Semipro,
+        Pro,
+        Lasvegas,
+        Free,
+        PokerChip,
+    }
+
     public enum MaxPlayer
     {
         SevenPoker = 5,
