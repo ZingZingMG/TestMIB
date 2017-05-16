@@ -22,6 +22,9 @@ public class PokerLobbyScene : LobbyScene
         if( ChannelViewGameObj != null)
         {
             ChannelViewGameObj.SetActive(true);
+            PokerChannelView View = GetComponent<PokerChannelView>();
+            assert.set(View, "View");
+            View.Open();
         }
     }
 

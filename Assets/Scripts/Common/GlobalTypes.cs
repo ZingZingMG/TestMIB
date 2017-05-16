@@ -12,6 +12,13 @@ namespace GlobalTypes
         Sudda,
     }
 
+    public enum ChannelState
+    {
+        Close,
+        Open,
+        Used,
+    }
+
     public enum PokerChannelType
     {
         Chobo,
@@ -20,9 +27,12 @@ namespace GlobalTypes
         Ama,
         Semipro,
         Pro,
+        Masters,
         Lasvegas,
         Free,
         PokerChip,
+        Cnt,
+        Invalid,
     }
 
     public enum MaxPlayer

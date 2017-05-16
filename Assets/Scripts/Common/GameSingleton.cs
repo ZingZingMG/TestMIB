@@ -57,6 +57,8 @@ public class GameSingleton : MonoBehaviour
 
             Init();
 
+            GameInit();
+
             DontDestroyOnLoad(gameObject);
         }
         else
