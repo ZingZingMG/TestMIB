@@ -9,21 +9,20 @@ public class PokerLobbyScene : LobbyScene
 
     void Awake()
     {
-        if( ChannelViewGameObj != null)
-        {
-            ChannelViewGameObj.SetActive(false);
-        }
+        assert.set(ChannelViewGameObj, "ChannelViewGameObj");
+        ChannelViewGameObj.SetActive(false);
     }
 
     public virtual void OnClickChangeChannel()
     {
         Debug.Log("OnClickChangeChannel");
 
-        if( ChannelViewGameObj != null)
+        ChannelViewGameObj.SetActive(!ChannelViewGameObj.activeSelf);
+        PokerChannelView View = GetComponent<PokerChannelView>();
+        assert.set(View, "View");
+
+        if (ChannelViewGameObj.activeSelf)
         {
-            ChannelViewGameObj.SetActive(true);
-            PokerChannelView View = GetComponent<PokerChannelView>();
-            assert.set(View, "View");
             View.Open();
         }
     }

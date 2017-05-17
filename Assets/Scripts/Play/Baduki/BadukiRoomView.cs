@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class HoolaRoomView : PokerRoomView
+public class BadukiRoomView : PokerRoomView
 {
     public override void OnClickTotalRoom()
     {
@@ -32,13 +32,8 @@ public class HoolaRoomView : PokerRoomView
         Debug.Log("OnClickRoomFilterUserCnt");
     }
 
-    public void OnClickRoomFilterGamePrice()
+    public void OnClickRoomFilterBBingValue()
     {
-        Debug.Log("OnClickRoomFilterGamePrice");
-    }
 
-    public void OnClickRoomFilterBetting()
-    {
-        Debug.Log("OnClickRoomFilterBetting");
     }
 }

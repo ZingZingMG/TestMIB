@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class LobbyScene : MonoBehaviour
 {
+    public MakeRoomDlg MakeRoomDialog;
+
+    void Awake()
+    {
+        assert.set(MakeRoomDialog, "MakeRoomDialog");
+        MakeRoomDialog.gameObject.SetActive(false);
+    }
 
     public void Init()
     {
@@ -13,6 +20,6 @@ public class LobbyScene : MonoBehaviour
 
     public void OnClickMakeRoom()
     {
-
+        MakeRoomDialog.Open();
     }
 }
