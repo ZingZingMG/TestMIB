@@ -27,13 +27,5 @@ public class PokerLobbyScene : LobbyScene
         }
     }
 
-    public virtual void OnClickDirectJoinRoom()
-    {
-        Debug.Log("OnClickDirectJoinRoom");
-    }
-
-    public virtual void OnClickSelectJoinRoom()
-    {
-        Debug.Log("OnClickSelectJoinRoom");
-    }
+    
 }

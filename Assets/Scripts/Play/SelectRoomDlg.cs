@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 
-public class MakeRoomDlg : MonoBehaviour
+public class SelectRoomDlg : MonoBehaviour
 {
     public virtual void Open()
     {
@@ -18,12 +18,17 @@ public class MakeRoomDlg : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void OnClickMakeOK()
+    public void OnClickClose()
     {
-
+        Close();
     }
 
-    public void OnClickMakeCancel()
+    public virtual void OnClickObserver()
+    {
+        Close();
+    }
+
+    public virtual void OnClickJoin()
     {
         Close();
     }

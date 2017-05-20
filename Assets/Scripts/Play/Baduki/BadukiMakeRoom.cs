@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class SevenPokerMakeRoom : PokerMakeRoom
+public class BadukiMakeRoom : PokerMakeRoom
 {
     public void OnUserCntDropdownListValueChange(int Index)
     {
@@ -21,10 +21,4 @@ public class SevenPokerMakeRoom : PokerMakeRoom
     {
 
     }
-
-    public void OnGameRuleDropdownListValueChange(int Index)
-    {
-
-    }
-   
 }
